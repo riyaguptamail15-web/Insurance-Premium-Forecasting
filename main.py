@@ -1,9 +1,22 @@
-from fastapi import FastAPI, Path, HTTPException, Query #Imports fastapi class
+from fastapi import FastAPI, Path, HTTPException, Query
 from fastapi.responses import JSONResponse
-from pydantic_post import Patient
+from pydantic import BaseModel, Field
 import json
 
-app=FastAPI()  # app object created of FastAPI
+
+class Patient(BaseModel):
+    id: str = Field(..., description='Patient ID')
+    name: str = Field(..., description='Patient name')
+    city: str = Field(..., description='City of residence')
+    age: int = Field(..., ge=0, description='Patient age')
+    gender: str = Field(..., description='Gender of the patient')
+    height: float = Field(..., gt=0, description='Height in meters')
+    weight: float = Field(..., gt=0, description='Weight in kg')
+    bmi: float = Field(..., ge=0, description='Body mass index')
+    verdict: str = Field(..., description='Health verdict')
+
+
+app = FastAPI()
 
 #decorator ki help se home route create kiya 
 @app.get("/")
